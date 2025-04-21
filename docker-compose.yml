@@ -1,7 +1,7 @@
 
 services:
   app:
-    build: .
+    build: ./devops/demo/
     volumes:
       - ./devops/demo/:/app/
     ports:
