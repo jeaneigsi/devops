@@ -1,0 +1,30 @@
+# Ignorer les fichiers et dossiers Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Environnements virtuels
+env/
+venv/
+ENV/
+.venv/
+.ENV/
+
+# Fichiers de logs
+*.log
+
+# Fichiers de base de données
+*.sqlite3
+
+# Fichiers de configuration locaux
+*.venv
+
+# Dossiers de build
+build/
+dist/
+*.egg-info/
+
+# Dossiers de l’IDE
+.vscode/
+.idea/
