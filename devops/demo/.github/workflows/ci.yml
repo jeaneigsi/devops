@@ -45,5 +45,5 @@ on:
         run: |
           docker compose exec app python manage.py test
 
-      - name: Stop Docker containers
+      - name: Stop Docker containers and release resources
         run: docker compose down
