@@ -1,4 +1,5 @@
 name: Django CI/CD Pipeline with Docker Compose
+
 on:
   push:
     branches:
@@ -9,41 +10,41 @@ on:
     branches:
       - main
 
-  jobs:
-    build:
-      runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
     services:
       docker:
-        image: docker:19.03.12
+        image: docker:24.0.7  # version plus récente
         options: --privileged
         ports:
           - 8000:8000
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: ✅ Checkout code
+        uses: actions/checkout@v4  # Mise à jour vers la version stable récente
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v1
+      - name: 🛠 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3  # Mise à jour recommandée
 
-      - name: Build Docker image
+      - name: 🧱 Build and run Docker Compose services
         run: docker compose -f docker-compose.yml up --build -d
 
-      - name: Wait for Django app to be ready
+      - name: ⏳ Wait for Django app to be ready
         run: |
           for i in {1..10}; do
-            if curl -s http://localhost:8000; then
-              echo "Django app is up!"
+            if curl -s http://localhost:8000 > /dev/null; then
+              echo "✅ Django app is up!"
               break
             fi
             echo "Waiting for Django app to be ready..."
             sleep 5
           done
 
-      - name: Run tests
+      - name: 🧪 Run Django tests
         run: |
           docker compose exec app python manage.py test
 
-      - name: Stop Docker containers and release resources
+      - name: 🧹 Stop Docker containers and clean up
         run: docker compose down
