@@ -1,0 +1,28 @@
+stages:
+  - test
+  - deploy
+
+variables:
+  RAILWAY_TOKEN: 15f8f484-f654-4aa3-9d0f-5df1321aecd3
+
+test:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - apk add --no-cache curl bash docker-compose
+  script:
+    - docker compose -f docker-compose.yml up -d --build
+    - docker compose exec app python manage.py test
+    - docker compose down
+
+deploy:
+  stage: deploy
+  image: node:18-alpine
+  script:
+    - npm install -g railway
+    - railway login --token $RAILWAY_TOKEN
+    - railway up
+  only:
+    - main
