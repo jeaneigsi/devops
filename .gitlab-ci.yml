@@ -22,7 +22,7 @@ deploy:
   image: node:18-alpine
   script:
     - npm install -g railway
-    - railway login --token $RAILWAY_TOKEN
+    - railway login --token 15f8f484-f654-4aa3-9d0f-5df1321aecd3
     - railway up
   only:
     - main
